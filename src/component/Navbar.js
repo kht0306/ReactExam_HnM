@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-const Navbar = ({ setAuthenticate, authenticate }) => {
+const Navbar = () => {
+  const authenticate = useSelector((state) => state.auth.authenticate);
+  const dispatch = useDispatch();
   const menuList = [
     "여성",
     "Divided",
@@ -17,7 +20,8 @@ const Navbar = ({ setAuthenticate, authenticate }) => {
   const navigate = useNavigate();
   const goToLogin = (authenticate) => {
     if (authenticate === true) {
-      setAuthenticate(false);
+      //setAuthenticate(false);
+      dispatch({ type: "LOGIN_OUT" });
       navigate("/login");
     } else {
       navigate("/login");

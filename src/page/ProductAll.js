@@ -1,12 +1,14 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../component/ProductCard";
+import { productAction } from "../redux/actions/productAction";
 
 const ProductAll = () => {
-  const [productList, setProductList] = useState([]);
+  const productList = useSelector((state) => state.product.productList);
   const [query, setQuery] = useSearchParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getProduct();
@@ -14,17 +16,7 @@ const ProductAll = () => {
 
   const getProduct = () => {
     let searchQuery = query.get("q") || "";
-    let orgUrl = `http://localhost:5000/products?q=${searchQuery}`;
-    axios({
-      url: orgUrl,
-      data: {},
-    })
-      .then((res) => {
-        setProductList(res.data);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
+    dispatch(productAction.getProduct(searchQuery));
   };
 
   return (
